@@ -24,7 +24,7 @@ class ItemCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.r),
-        side: BorderSide(color: Colors.grey.withValues(alpha: 0.2), width: 1),
+        side: BorderSide(color: Colors.grey.shade300, width: 1.5),
       ),
       elevation: 0,
       child: InkWell(

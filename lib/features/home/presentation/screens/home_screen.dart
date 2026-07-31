@@ -10,6 +10,7 @@ import 'package:nota/features/items/presentation/widgets/item_card.dart';
 import 'package:nota/features/items/presentation/screens/item_details_screen.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:nota/core/services/notification_service.dart';
+import 'package:nota/core/router/router_path.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -121,8 +122,17 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nota', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('نُوتَة', style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.pushNamed(context, RouterPath.settings);
+            },
+          ),
+          SizedBox(width: 8.w),
+        ],
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(60.h),
           child: Padding(
@@ -132,13 +142,21 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                 context.read<ItemsCubit>().searchItems(query);
               },
               decoration: InputDecoration(
-                hintText: 'Search notes, links, tags...',
+                hintText: 'بحث في الملاحظات، الروابط، الوسوم...',
                 prefixIcon: const Icon(Icons.search),
                 filled: true,
                 fillColor: Theme.of(context).cardColor,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16.r),
-                  borderSide: BorderSide.none,
+                  borderSide: BorderSide(color: Colors.grey.shade300, width: 1.5),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16.r),
+                  borderSide: BorderSide(color: Colors.grey.shade300, width: 1.5),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16.r),
+                  borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 2),
                 ),
                 contentPadding: EdgeInsets.zero,
               ),

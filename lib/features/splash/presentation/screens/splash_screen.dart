@@ -46,14 +46,18 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                'assets/images/app_icon.png',
-                width: 120.w,
-                height: 120.w,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(30.r), // حواف دائرية ناعمة
+                child: Image.asset(
+                  'assets/images/app_icon.png',
+                  width: 120.w,
+                  height: 120.w,
+                  fit: BoxFit.cover,
+                ),
               ),
               SizedBox(height: 24.h),
               Text(
-                'Nota',
+                'نُوتَة',
                 style: TextStyle(
                   fontSize: 32.sp,
                   fontWeight: FontWeight.bold,
@@ -63,7 +67,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
               ),
               SizedBox(height: 8.h),
               Text(
-                'Your Second Brain',
+                'عقلك الثاني',
                 style: TextStyle(
                   fontSize: 16.sp,
                   color: Colors.grey[600],

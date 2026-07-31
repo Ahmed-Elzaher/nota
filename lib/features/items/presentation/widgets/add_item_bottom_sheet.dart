@@ -70,7 +70,7 @@ class _AddItemBottomSheetState extends State<AddItemBottomSheet> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'Add New Item',
+            'إضافة ملاحظة جديدة',
             style: TextStyle(
               fontSize: 20.sp,
               fontWeight: FontWeight.bold,
@@ -79,8 +79,8 @@ class _AddItemBottomSheetState extends State<AddItemBottomSheet> {
           SizedBox(height: 16.h),
           SegmentedButton<String>(
             segments: const [
-              ButtonSegment(value: 'text', icon: Icon(Icons.notes), label: Text('Note')),
-              ButtonSegment(value: 'url', icon: Icon(Icons.link), label: Text('Link')),
+              ButtonSegment(value: 'text', icon: Icon(Icons.notes), label: Text('نص')),
+              ButtonSegment(value: 'url', icon: Icon(Icons.link), label: Text('رابط')),
             ],
             selected: {_selectedType},
             onSelectionChanged: (Set<String> newSelection) {
@@ -89,6 +89,7 @@ class _AddItemBottomSheetState extends State<AddItemBottomSheet> {
               });
             },
           ),
+          SizedBox(height: 16.h), // مساحة إضافية لمنع التداخل
           DropdownButtonFormField<String>(
             initialValue: _selectedCategory,
             decoration: const InputDecoration(labelText: 'القسم'),
@@ -102,7 +103,7 @@ class _AddItemBottomSheetState extends State<AddItemBottomSheet> {
             controller: _contentController,
             maxLines: _selectedType == 'text' ? 4 : 1,
             decoration: InputDecoration(
-              hintText: _selectedType == 'text' ? 'Write your note here...' : 'Paste link here...',
+              hintText: _selectedType == 'text' ? 'اكتب ملاحظتك هنا...' : 'الصق الرابط هنا...',
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.r),
               ),
@@ -112,7 +113,7 @@ class _AddItemBottomSheetState extends State<AddItemBottomSheet> {
           TextField(
             controller: _tagsController,
             decoration: InputDecoration(
-              hintText: 'Tags (comma separated)',
+              hintText: 'الوسوم (مفصولة بفاصلة)',
               prefixIcon: const Icon(Icons.tag),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.r),
@@ -129,7 +130,7 @@ class _AddItemBottomSheetState extends State<AddItemBottomSheet> {
               ),
             ),
             child: Text(
-              'Save',
+              'حفظ',
               style: TextStyle(fontSize: 16.sp),
             ),
           ),

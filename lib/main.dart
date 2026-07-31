@@ -6,6 +6,8 @@ import 'package:nota/core/router/router_path.dart';
 import 'package:nota/core/theme/app_themes.dart';
 import 'package:nota/core/services/notification_service.dart';
 
+import 'package:flutter_localizations/flutter_localizations.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationService.instance.initialize();
@@ -27,7 +29,17 @@ class MyApp extends StatelessWidget {
       builder: (_, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Nota',
+          title: 'نُوتَة',
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('ar'),
+            Locale('en'),
+          ],
+          locale: const Locale('ar'), // Default and forced RTL for now
           theme: AppThemes.lightTheme,
           onGenerateRoute: AppRouter().onGenerateRoute,
           initialRoute: RouterPath.splash,
