@@ -7,6 +7,11 @@ import 'package:nota/core/theme/app_themes.dart';
 import 'package:nota/core/services/notification_service.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nota/core/utils/extensions/l10n_extension.dart';
+import 'package:nota/l10n/app_localizations.dart';
+import 'package:nota/core/settings/app_settings_cubit.dart';
+import 'package:nota/core/settings/app_settings_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,29 +27,40 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(375, 812),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (_, child) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'نُوتَة',
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [
-            Locale('ar'),
-            Locale('en'),
-          ],
-          locale: const Locale('ar'), // Default and forced RTL for now
-          theme: AppThemes.lightTheme,
-          onGenerateRoute: AppRouter().onGenerateRoute,
-          initialRoute: RouterPath.splash,
-        );
-      },
+    return BlocProvider.value(
+      value: getIt<AppSettingsCubit>(),
+      child: BlocBuilder<AppSettingsCubit, AppSettingsState>(
+        builder: (context, state) {
+          return ScreenUtilInit(
+            designSize: const Size(375, 812),
+            minTextAdapt: true,
+            splitScreenMode: true,
+            builder: (_, child) {
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                onGenerateTitle: (context) => context.l10n.appName,
+                localizationsDelegates: const [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: const [
+                  Locale('ar'),
+                  Locale('en'),
+                ],
+                locale: state.locale,
+                theme: AppThemes.lightTheme,
+                darkTheme: AppThemes.darkTheme,
+                themeMode: state.themeMode,
+                themeAnimationDuration: Duration.zero,
+                onGenerateRoute: AppRouter().onGenerateRoute,
+                initialRoute: RouterPath.splash,
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
