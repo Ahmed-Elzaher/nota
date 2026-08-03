@@ -2,11 +2,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:nota/features/items/data/model/item_model.dart';
+import 'package:nota/features/items/domain/entity/item_entity.dart';
 import 'package:any_link_preview/any_link_preview.dart';
 
 class ItemCard extends StatelessWidget {
-  final ItemModel item;
+  final ItemEntity item;
   final VoidCallback onDelete;
   final VoidCallback onTap;
 
@@ -102,19 +102,19 @@ class ItemCard extends StatelessWidget {
                             ),
                           ),
                           SizedBox(width: 8.w),
-                          GestureDetector(
-                            onTap: onDelete,
-                            child: Container(
-                              padding: EdgeInsets.all(4.w),
-                              decoration: BoxDecoration(
-                                color: Colors.redAccent.withValues(alpha: 0.1),
-                                shape: BoxShape.circle,
-                              ),
-                              child: HugeIcon(
-                                icon: HugeIcons.strokeRoundedDelete01,
-                                color: Colors.redAccent,
-                                size: 18.sp,
-                              ),
+                          IconButton(
+                            onPressed: onDelete,
+                            icon: HugeIcon(
+                              icon: HugeIcons.strokeRoundedDelete02,
+                              color: Theme.of(context).colorScheme.error.withValues(alpha: 0.8),
+                              size: 20.sp,
+                            ),
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                            style: IconButton.styleFrom(
+                              backgroundColor: Theme.of(context).colorScheme.error.withValues(alpha: 0.1),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+                              padding: EdgeInsets.all(6.w),
                             ),
                           ),
                         ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nota/features/items/data/model/item_model.dart';
+import 'package:nota/features/items/domain/entity/item_entity.dart';
 import 'package:nota/features/items/presentation/controller/items_cubit.dart';
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -8,7 +8,7 @@ import 'package:nota/core/services/notification_service.dart';
 import 'package:nota/core/utils/extensions/l10n_extension.dart';
 
 class ItemDetailsScreen extends StatefulWidget {
-  final ItemModel item;
+  final ItemEntity item;
 
   const ItemDetailsScreen({super.key, required this.item});
 
@@ -47,7 +47,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
   }
 
   void _saveChanges() {
-    final updatedItem = ItemModel(
+    final updatedItem = ItemEntity(
       id: widget.item.id,
       type: widget.item.type,
       content: _contentController.text,

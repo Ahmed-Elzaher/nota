@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nota/features/home/presentation/screen/home_screen.dart';
 import 'package:nota/features/main_layout/presentation/controller/main_cubit.dart';
-import 'package:nota/features/map/presentation/screen/map_screen.dart';
+import 'package:nota/features/mind_map/presentation/screen/mind_maps_list_screen.dart';
 import 'package:nota/features/tips/presentation/screen/tips_screen.dart';
 import 'package:nota/features/soon/presentation/screen/soon_screen.dart';
 import 'package:nota/features/voice_notes/presentation/screen/voice_notes_screen.dart';
@@ -25,7 +25,7 @@ class _MainLayoutContent extends StatelessWidget {
 
   final List<Widget> _screens = const [
     HomeScreen(),
-    MapScreen(),
+    MindMapsListScreen(),
     TipsScreen(),
     VoiceNotesScreen(),
     SoonScreen(),

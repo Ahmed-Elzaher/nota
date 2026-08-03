@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:nota/features/items/data/model/item_model.dart';
+import 'package:nota/core/utils/errors/failures.dart';
+import 'package:nota/features/items/domain/entity/item_entity.dart';
 import 'package:nota/features/items/domain/repository/items_repository.dart';
 
 class SearchItemsUseCase {
@@ -7,7 +8,7 @@ class SearchItemsUseCase {
 
   SearchItemsUseCase(this.repository);
 
-  Future<Either<String, List<ItemModel>>> call(String query) async {
-    return await repository.searchItems(query);
+  Future<Either<Failure, List<ItemEntity>>> call(String query) {
+    return repository.searchItems(query);
   }
 }

@@ -11,6 +11,10 @@ import 'package:nota/features/items/domain/use_case/get_items_use_case.dart';
 import 'package:nota/features/items/domain/use_case/search_items_use_case.dart';
 import 'package:nota/features/items/domain/use_case/update_item_usecase.dart';
 import 'package:nota/features/items/presentation/controller/items_cubit.dart';
+import 'package:nota/features/mind_map/data/data_source/mind_map_local_data_source.dart';
+import 'package:nota/features/mind_map/data/repository/mind_map_repository_impl.dart';
+import 'package:nota/features/mind_map/domain/repository/mind_map_repository.dart';
+import 'package:nota/features/mind_map/presentation/controller/mind_maps_cubit.dart';
 import 'package:nota/core/settings/app_settings_cubit.dart';
 
 final getIt = GetIt.instance;
@@ -30,6 +34,13 @@ Future<void> setUpLocators() async {
   );
   getIt.registerLazySingleton<ItemsRepository>(
     () => ItemsRepositoryImpl(getIt<ItemsLocalDataSource>()),
+  );
+
+  getIt.registerLazySingleton<MindMapLocalDataSource>(
+    () => MindMapLocalDataSource(),
+  );
+  getIt.registerLazySingleton<MindMapRepository>(
+    () => MindMapRepositoryImpl(getIt<MindMapLocalDataSource>()),
   );
 
   // Use Cases
@@ -58,6 +69,10 @@ Future<void> setUpLocators() async {
       updateItemUseCase: getIt<UpdateItemUseCase>(),
       deleteItemUseCase: getIt<DeleteItemUseCase>(),
     ),
+  );
+
+  getIt.registerLazySingleton<MindMapsCubit>(
+    () => MindMapsCubit(repository: getIt<MindMapRepository>()),
   );
 
   getIt.registerLazySingleton<AppSettingsCubit>(

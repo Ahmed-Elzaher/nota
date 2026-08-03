@@ -1,16 +1,25 @@
 import 'package:isar/isar.dart';
+import 'package:nota/features/items/domain/entity/item_entity.dart';
 
 part 'item_model.g.dart';
 
 @collection
-class ItemModel {
+class ItemModel implements ItemEntity {
+  @override
   Id id = Isar.autoIncrement;
-  String type; // 'text', 'url', 'image'
+  @override
+  String type;
+  @override
   String content;
+  @override
   String? title;
+  @override
   String? imageUrl;
-  String? tags; // comma separated
+  @override
+  String? tags;
+  @override
   String category;
+  @override
   String createdAt;
 
   ItemModel({
@@ -23,6 +32,7 @@ class ItemModel {
     this.category = 'أخرى',
     required this.createdAt,
   });
+
 
   factory ItemModel.fromMap(Map<String, dynamic> map) {
     return ItemModel(

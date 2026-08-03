@@ -1,7 +1,7 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-import 'package:nota/features/items/data/model/item_model.dart';
+import 'package:nota/features/items/domain/entity/item_entity.dart';
 import 'dart:io';
 import 'dart:math';
 
@@ -43,7 +43,7 @@ class NotificationService {
     }
   }
 
-  Future<void> scheduleItemReminder(ItemModel item, DateTime scheduledTime) async {
+  Future<void> scheduleItemReminder(ItemEntity item, DateTime scheduledTime) async {
     final id = item.id;
     
     final androidDetails = AndroidNotificationDetails(

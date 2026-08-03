@@ -3,27 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:nota/core/di/di.dart';
+import 'package:nota/core/router/router_path.dart';
+import 'package:nota/core/services/notification_service.dart';
+import 'package:nota/core/utils/extensions/l10n_extension.dart';
+import 'package:nota/features/home/presentation/widget/category_tabs_widget.dart';
+import 'package:nota/features/home/presentation/widget/home_items_grid.dart';
 import 'package:nota/features/items/presentation/controller/items_cubit.dart';
 import 'package:nota/features/items/presentation/controller/items_state.dart';
-
-import 'package:nota/features/items/presentation/widget/item_card.dart';
-import 'package:nota/features/items/presentation/screen/item_details_screen.dart';
-import 'package:nota/features/home/presentation/widget/category_tabs_widget.dart';
-import 'package:nota/features/home/presentation/widget/empty_notes_widget.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
-import 'package:nota/core/services/notification_service.dart';
-import 'package:nota/core/router/router_path.dart';
-import 'package:nota/core/utils/extensions/l10n_extension.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<ItemsCubit>()..fetchItems(),
+    return BlocProvider.value(
+      value: getIt<ItemsCubit>()..fetchItems(),
       child: const _HomeScreenContent(),
     );
   }
@@ -204,59 +200,33 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
           const CategoryTabsWidget(),
           SizedBox(height: 8.h),
           Expanded(
-            child: BlocBuilder<ItemsCubit, ItemsState>(
+            child: BlocConsumer<ItemsCubit, ItemsState>(
+              listener: (context, state) {
+                if (state is ItemsError) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(state.failure.message, style: const TextStyle(color: Colors.white)),
+                      backgroundColor: Theme.of(context).colorScheme.error,
+                    ),
+                  );
+                }
+              },
               builder: (context, state) {
                 if (state is ItemsLoading) {
                   return const Center(child: CircularProgressIndicator());
-                } else if (state is ItemsError) {
-                  return Center(child: Text(state.message));
-                } else if (state is ItemsLoaded) {
-                  return RefreshIndicator(
-                    onRefresh: () async {
-                      await context.read<ItemsCubit>().fetchItems();
-                    },
-                    child: state.items.isEmpty
-                        ? const EmptyNotesWidget()
-                        : MasonryGridView.builder(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            padding: EdgeInsets.only(
-                              left: 16.w,
-                              right: 16.w,
-                              top: 8.h,
-                              bottom: 100.h,
-                            ),
-                            gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                            ),
-                            mainAxisSpacing: 12.h,
-                            crossAxisSpacing: 12.w,
-                            itemCount: state.items.length,
-                            itemBuilder: (context, index) {
-                              final item = state.items[index];
-                              return ItemCard(
-                                item: item,
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => BlocProvider.value(
-                                        value: context.read<ItemsCubit>(),
-                                        child: ItemDetailsScreen(item: item),
-                                      ),
-                                    ),
-                                  );
-                                },
-                                onDelete: () {
-                                  context.read<ItemsCubit>().deleteItem(
-                                    int.parse(item.id.toString()),
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                  );
-                }
-                return const SizedBox();
+                } 
+                
+                // Get items either from ItemsLoaded or fallback to cubit cache
+                final items = (state is ItemsLoaded) 
+                    ? state.items 
+                    : context.read<ItemsCubit>().allItems;
+
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    await context.read<ItemsCubit>().fetchItems();
+                  },
+                  child: HomeItemsGrid(items: items),
+                );
               },
             ),
           ),
@@ -267,6 +237,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
           bottom: MediaQuery.of(context).viewInsets.bottom > 0 ? 0 : 80.h,
         ),
         child: FloatingActionButton(
+          heroTag: 'home_fab',
           onPressed: _showAddSheet,
           child: const HugeIcon(
             icon: HugeIcons.strokeRoundedAdd01,

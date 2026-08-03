@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nota/features/items/data/model/item_model.dart';
+import 'package:nota/features/items/domain/entity/item_entity.dart';
 import 'package:nota/features/items/domain/use_case/add_item_use_case.dart';
 import 'package:nota/features/items/domain/use_case/delete_item_use_case.dart';
 import 'package:nota/features/items/domain/use_case/get_items_use_case.dart';
@@ -14,7 +14,7 @@ class ItemsCubit extends Cubit<ItemsState> {
   final UpdateItemUseCase updateItemUseCase;
   final DeleteItemUseCase deleteItemUseCase;
 
-  List<ItemModel> allItems = []; // in-memory cache for filtering
+  List<ItemEntity> allItems = []; // in-memory cache for filtering
   String currentCategory = 'الكل';
 
   ItemsCubit({
@@ -72,27 +72,49 @@ class ItemsCubit extends Cubit<ItemsState> {
     );
   }
 
-  Future<void> addItem(ItemModel item) async {
+  Future<void> addItem(ItemEntity item) async {
     final result = await addItemUseCase.call(item);
     result.fold(
-      (error) => emit(ItemsError(error)),
-      (id) => fetchItems(),
+      (error) {
+        emit(ItemsError(error));
+        _emitFilteredItems();
+      },
+      (id) {
+        item.id = id;
+        allItems.insert(0, item);
+        _emitFilteredItems();
+      },
     );
   }
 
-  Future<void> updateItem(ItemModel item) async {
+  Future<void> updateItem(ItemEntity item) async {
     final result = await updateItemUseCase.call(item);
     result.fold(
-      (error) => emit(ItemsError(error)),
-      (_) => fetchItems(),
+      (error) {
+        emit(ItemsError(error));
+        _emitFilteredItems();
+      },
+      (_) {
+        final index = allItems.indexWhere((i) => i.id == item.id);
+        if (index != -1) {
+          allItems[index] = item;
+          _emitFilteredItems();
+        }
+      },
     );
   }
 
   Future<void> deleteItem(int id) async {
     final result = await deleteItemUseCase.call(id);
     result.fold(
-      (error) => emit(ItemsError(error)),
-      (_) => fetchItems(),
+      (error) {
+        emit(ItemsError(error));
+        _emitFilteredItems();
+      },
+      (_) {
+        allItems.removeWhere((i) => i.id == id);
+        _emitFilteredItems();
+      },
     );
   }
 }

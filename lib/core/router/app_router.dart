@@ -8,7 +8,10 @@ import 'package:nota/features/settings/presentation/screen/settings_screen.dart'
 import 'package:nota/features/notifications/presentation/screen/notifications_screen.dart';
 import 'package:nota/features/items/presentation/controller/items_cubit.dart';
 import 'package:nota/features/items/presentation/screen/add_item_screen.dart';
-
+import 'package:nota/features/mind_map/domain/entity/mind_map_entity.dart';
+import 'package:nota/features/mind_map/presentation/controller/mind_maps_cubit.dart';
+import 'package:nota/features/mind_map/presentation/screen/mind_maps_list_screen.dart';
+import 'package:nota/features/mind_map/presentation/screen/mind_map_editor_screen.dart';
 class AppRouter {
   Route onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -28,6 +31,21 @@ class AppRouter {
         );
       case RouterPath.notifications:
         return MaterialPageRoute(builder: (context) => const NotificationsScreen());
+      case RouterPath.mindMapList:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider.value(
+            value: getIt<MindMapsCubit>(),
+            child: const MindMapsListScreen(),
+          ),
+        );
+      case RouterPath.mindMapEditor:
+        final initialMap = settings.arguments as MindMapEntity?;
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider.value(
+            value: getIt<MindMapsCubit>(),
+            child: MindMapEditorScreen(initialMindMap: initialMap),
+          ),
+        );
       default:
         return MaterialPageRoute(
           builder: (context) => const Scaffold(

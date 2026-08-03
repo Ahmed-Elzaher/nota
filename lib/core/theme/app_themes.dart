@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppThemes {
   // Light Theme Colors
@@ -14,7 +15,8 @@ class AppThemes {
 
   static ThemeData get lightTheme {
     return ThemeData(
-      fontFamily: 'Cairo',
+      fontFamily: GoogleFonts.tajawal().fontFamily,
+      textTheme: GoogleFonts.tajawalTextTheme(ThemeData.light().textTheme),
       useMaterial3: true,
       brightness: Brightness.light,
       colorScheme: ColorScheme.fromSeed(
@@ -25,14 +27,13 @@ class AppThemes {
         surface: lightBackgroundColor,
       ),
       scaffoldBackgroundColor: lightBackgroundColor,
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        iconTheme: IconThemeData(color: primaryColor),
-        titleTextStyle: TextStyle(
+        iconTheme: const IconThemeData(color: primaryColor),
+        titleTextStyle: GoogleFonts.tajawal(
           color: Colors.black87,
-          fontFamily: 'Cairo',
           fontSize: 22,
           fontWeight: FontWeight.bold,
           letterSpacing: -0.5,
@@ -72,8 +73,7 @@ class AppThemes {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          textStyle: const TextStyle(
-            fontFamily: 'Cairo',
+          textStyle: GoogleFonts.tajawal(
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
@@ -87,7 +87,7 @@ class AppThemes {
           borderRadius: BorderRadius.all(Radius.circular(16)),
         ),
       ),
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: Colors.white,
         selectedItemColor: primaryColor,
         unselectedItemColor: Colors.black38,
@@ -95,8 +95,8 @@ class AppThemes {
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: true,
         showUnselectedLabels: true,
-        selectedLabelStyle: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold, fontSize: 12),
-        unselectedLabelStyle: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.normal, fontSize: 12),
+        selectedLabelStyle: GoogleFonts.tajawal(fontWeight: FontWeight.bold, fontSize: 12),
+        unselectedLabelStyle: GoogleFonts.tajawal(fontWeight: FontWeight.normal, fontSize: 12),
       ),
     );
   }
@@ -104,7 +104,8 @@ class AppThemes {
   static ThemeData get darkTheme {
     return ThemeData(
       primaryColor: darkPrimaryColor,
-      fontFamily: 'Cairo',
+      fontFamily: GoogleFonts.tajawal().fontFamily,
+      textTheme: GoogleFonts.tajawalTextTheme(ThemeData.dark().textTheme),
       useMaterial3: true,
       brightness: Brightness.dark,
       colorScheme: ColorScheme.fromSeed(
@@ -115,14 +116,13 @@ class AppThemes {
         surface: darkBackgroundColor,
       ),
       scaffoldBackgroundColor: darkBackgroundColor,
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.white),
-        titleTextStyle: TextStyle(
+        iconTheme: const IconThemeData(color: Colors.white),
+        titleTextStyle: GoogleFonts.tajawal(
           color: Colors.white,
-          fontFamily: 'Cairo',
           fontSize: 22,
           fontWeight: FontWeight.bold,
           letterSpacing: -0.5,
@@ -162,8 +162,7 @@ class AppThemes {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          textStyle: const TextStyle(
-            fontFamily: 'Cairo',
+          textStyle: GoogleFonts.tajawal(
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
@@ -177,7 +176,7 @@ class AppThemes {
           borderRadius: BorderRadius.all(Radius.circular(16)),
         ),
       ),
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: darkCardColor,
         selectedItemColor: darkPrimaryColor,
         unselectedItemColor: Colors.white54,
@@ -185,8 +184,8 @@ class AppThemes {
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: true,
         showUnselectedLabels: true,
-        selectedLabelStyle: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold, fontSize: 12),
-        unselectedLabelStyle: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.normal, fontSize: 12),
+        selectedLabelStyle: GoogleFonts.tajawal(fontWeight: FontWeight.bold, fontSize: 12),
+        unselectedLabelStyle: GoogleFonts.tajawal(fontWeight: FontWeight.normal, fontSize: 12),
       ),
     );
   }

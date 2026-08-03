@@ -1,6 +1,6 @@
 import 'package:isar/isar.dart';
 import 'package:nota/features/items/data/model/item_model.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:nota/core/services/database_service.dart';
 
 abstract class ItemsLocalDataSource {
   Future<List<ItemModel>> getItems();
@@ -11,17 +11,7 @@ abstract class ItemsLocalDataSource {
 }
 
 class ItemsLocalDataSourceImpl implements ItemsLocalDataSource {
-  Isar? _isar;
-
-  Future<Isar> get isar async {
-    if (_isar != null) return _isar!;
-    final dir = await getApplicationDocumentsDirectory();
-    _isar = await Isar.open(
-      [ItemModelSchema],
-      directory: dir.path,
-    );
-    return _isar!;
-  }
+  Future<Isar> get isar => DatabaseService.instance.database;
 
   @override
   Future<List<ItemModel>> getItems() async {

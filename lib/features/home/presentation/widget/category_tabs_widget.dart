@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nota/core/utils/extensions/l10n_extension.dart';
 import 'package:nota/features/items/presentation/controller/items_cubit.dart';
+import 'package:nota/core/settings/app_settings_cubit.dart';
 
 class CategoryTabsWidget extends StatelessWidget {
   const CategoryTabsWidget({super.key});
@@ -21,11 +22,14 @@ class CategoryTabsWidget extends StatelessWidget {
     final customCategories = itemsCubit.uniqueCategories;
     final categories = [...defaultCategories, ...customCategories];
     
+    final appSettings = context.watch<AppSettingsCubit>().state;
+    final isDarkMode = appSettings.themeMode == ThemeMode.dark;
     final currentCat = itemsCubit.currentCategory;
 
     return SizedBox(
       height: 44.h,
       child: ListView.separated(
+        key: ValueKey(isDarkMode),
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         scrollDirection: Axis.horizontal,
         itemCount: categories.length,
@@ -42,6 +46,7 @@ class CategoryTabsWidget extends StatelessWidget {
               }
             },
             selectedColor: Theme.of(context).primaryColor,
+            checkmarkColor: Colors.white,
             backgroundColor: Theme.of(context).cardColor,
             elevation: 0,
             pressElevation: 0,
